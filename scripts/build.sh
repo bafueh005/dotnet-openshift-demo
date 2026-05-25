@@ -29,6 +29,7 @@ oc start-build "${APP}" \
   --build-arg="GIT_SHA=${GIT_SHA}" \
   --build-arg="BUILD_TIME=${BUILD_TIME}" \
   --build-arg="IMAGE_TAG=${GIT_SHA}" \
+  --build-arg="APP_VERSION=${APP_VERSION}" \
   --follow
 
 echo "==> Tagging ImageStream :latest -> :${GIT_SHA}"
