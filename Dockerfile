@@ -12,12 +12,15 @@ COPY --from=build /app ./
 ARG GIT_SHA=unknown
 ARG BUILD_TIME=unknown
 ARG IMAGE_TAG=latest
+ARG APP_VERSION=0.0.0
 ENV APP_GIT_SHA=${GIT_SHA} \
     APP_BUILD_TIME=${BUILD_TIME} \
-    APP_IMAGE_TAG=${IMAGE_TAG}
+    APP_IMAGE_TAG=${IMAGE_TAG} \
+    APP_VERSION=${APP_VERSION}
 
 LABEL org.opencontainers.image.revision="${GIT_SHA}" \
       org.opencontainers.image.created="${BUILD_TIME}" \
+      org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.source="https://github.com/bafueh005/dotnet-openshift-demo"
 
 ENV ASPNETCORE_URLS=http://0.0.0.0:8080 \
