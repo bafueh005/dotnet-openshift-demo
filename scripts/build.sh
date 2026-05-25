@@ -16,9 +16,10 @@ APP=${APP:-dotnet-openshift-demo}
 GIT_REF=${GIT_REF:-main}
 GIT_SHA=$(git rev-parse --short HEAD)
 BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-APP_VERSION=$(grep -E '<Version>' "${APP^^}".csproj 2>/dev/null | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/' || echo "0.0.1")
-
-# csproj has fixed name DotnetOpenshiftDemo.csproj
+CSPROJ=$(ls -1 *.csproj 2>/dev/null | head -1)
+APP_VERSION=$(grep -E '<Version>' "$CSPROJ" 2>/dev/null \
+              | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/' \
+              | head -1)
 [ -z "${APP_VERSION:-}" ] && APP_VERSION=0.0.1
 
 echo "==> Starting OpenShift build for ${APP} @ ${GIT_SHA}"
