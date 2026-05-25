@@ -30,12 +30,7 @@ public class Program
             host      = Environment.MachineName
         };
 
-        app.MapGet("/", () => Results.Ok(new
-        {
-            status = "running",
-            message = "Hello from OpenShift BuildConfig pipeline!",
-            build = BuildInfo()
-        }));
+        app.MapGet("/", () => Results.Text("Hello World"));
 
         app.MapGet("/info", () => Results.Ok(BuildInfo()));
         app.MapGet("/ping", () => Results.Text("pong"));
