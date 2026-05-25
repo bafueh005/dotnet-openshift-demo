@@ -39,6 +39,8 @@ public class Program
 
         app.MapGet("/info", () => Results.Ok(BuildInfo()));
         app.MapGet("/ping", () => Results.Text("pong"));
+        app.MapGet("/version", () => Results.Text(
+            Environment.GetEnvironmentVariable("APP_VERSION") ?? "dev"));
 
         app.MapGet("/health/live", () => Results.Ok(new { status = "live" }));
         app.MapGet("/health/ready", () => Results.Ok(new { status = "ready" }));
