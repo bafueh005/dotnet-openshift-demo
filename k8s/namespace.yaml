@@ -4,3 +4,4 @@ metadata:
   name: dotnet-demo
   labels:
     app.kubernetes.io/part-of: dotnet-openshift-demo
+    argocd.argoproj.io/managed-by: openshift-gitops
