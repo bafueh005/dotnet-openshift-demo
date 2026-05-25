@@ -1,0 +1,6 @@
+@DotnetOpenshiftDemo_HostAddress = http://localhost:5013
+
+GET {{DotnetOpenshiftDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

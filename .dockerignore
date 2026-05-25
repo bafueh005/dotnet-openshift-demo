@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+*.user
+.git/
+.github/
+k8s/
+argocd/
+README.md
+Dockerfile
+.dockerignore
