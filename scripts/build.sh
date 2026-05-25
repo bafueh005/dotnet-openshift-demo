@@ -57,6 +57,15 @@ EOF
 echo "==> Waiting for rollout..."
 oc rollout status deployment/"${APP}" -n "${NAMESPACE}" --timeout=180s
 
+# Mirror the just-built image to the local backup store. Best-effort:
+# a backup failure should not fail the build itself.
+SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd)"
+if [ -x "$SCRIPT_DIR/backup-images.sh" ] && [ "${SKIP_BACKUP:-0}" != 1 ]; then
+  echo "==> Mirroring image ${GIT_SHA} to local backup store"
+  "$SCRIPT_DIR/backup-images.sh" "${GIT_SHA}" || \
+    echo "warn: backup-images.sh failed -- image is live but not backed up"
+fi
+
 echo
 echo "Done. Build info:"
 oc get configmap app-build-info -n "${NAMESPACE}" -o jsonpath='{.data}' | jq .
