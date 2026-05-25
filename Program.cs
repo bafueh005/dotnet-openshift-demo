@@ -38,6 +38,7 @@ public class Program
         }));
 
         app.MapGet("/info", () => Results.Ok(BuildInfo()));
+        app.MapGet("/ping", () => Results.Text("pong"));
 
         app.MapGet("/health/live", () => Results.Ok(new { status = "live" }));
         app.MapGet("/health/ready", () => Results.Ok(new { status = "ready" }));
