@@ -24,7 +24,9 @@ public class Program
         {
             name = "dotnet-openshift-demo",
             status = "running",
-            version = Environment.GetEnvironmentVariable("APP_VERSION") ?? "dev"
+            version = Environment.GetEnvironmentVariable("APP_VERSION") ?? "dev",
+            message = "Hello from ArgoCD GitOps! \U0001F680",
+            host = Environment.MachineName
         }));
 
         app.MapGet("/health/live", () => Results.Ok(new { status = "live" }));
