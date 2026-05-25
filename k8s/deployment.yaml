@@ -5,6 +5,9 @@ metadata:
   namespace: dotnet-demo
   labels:
     app: dotnet-openshift-demo
+  annotations:
+    image.openshift.io/triggers: |
+      [{"from":{"kind":"ImageStreamTag","name":"dotnet-openshift-demo:latest","namespace":"dotnet-demo"},"fieldPath":"spec.template.spec.containers[?(@.name==\"app\")].image","pause":"false"}]
 spec:
   replicas: 2
   selector:
@@ -14,21 +17,22 @@ spec:
     metadata:
       labels:
         app: dotnet-openshift-demo
+      annotations:
+        app.kubernetes.io/build-info-checksum: bootstrap
     spec:
       containers:
         - name: app
-          image: ghcr.io/bafueh005/dotnet-openshift-demo:3ce6d3e
-          imagePullPolicy: Always
+          image: image-registry.openshift-image-registry.svc:5000/dotnet-demo/dotnet-openshift-demo:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: app-build-info
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Production
-            - name: APP_VERSION
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.labels['app.kubernetes.io/version']
           readinessProbe:
             httpGet:
               path: /health/ready

@@ -20,14 +20,24 @@ public class Program
 
         app.UseAuthorization();
 
+        object BuildInfo() => new
+        {
+            name      = Environment.GetEnvironmentVariable("APP_NAME") ?? "dotnet-openshift-demo",
+            version   = Environment.GetEnvironmentVariable("APP_VERSION") ?? "dev",
+            gitSha    = Environment.GetEnvironmentVariable("APP_GIT_SHA") ?? "unknown",
+            imageTag  = Environment.GetEnvironmentVariable("APP_IMAGE_TAG") ?? "unknown",
+            buildTime = Environment.GetEnvironmentVariable("APP_BUILD_TIME") ?? "unknown",
+            host      = Environment.MachineName
+        };
+
         app.MapGet("/", () => Results.Ok(new
         {
-            name = "dotnet-openshift-demo",
             status = "running",
-            version = Environment.GetEnvironmentVariable("APP_VERSION") ?? "dev",
-            message = "Hello from ArgoCD GitOps! \U0001F680",
-            host = Environment.MachineName
+            message = "Hello from OpenShift BuildConfig pipeline!",
+            build = BuildInfo()
         }));
+
+        app.MapGet("/info", () => Results.Ok(BuildInfo()));
 
         app.MapGet("/health/live", () => Results.Ok(new { status = "live" }));
         app.MapGet("/health/ready", () => Results.Ok(new { status = "ready" }));

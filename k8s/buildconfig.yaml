@@ -1,0 +1,30 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: dotnet-openshift-demo
+  namespace: dotnet-demo
+  labels:
+    app: dotnet-openshift-demo
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/bafueh005/dotnet-openshift-demo.git
+      ref: main
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: dotnet-openshift-demo:latest
+  triggers:
+    - type: ConfigChange
+    - type: GitHub
+      github:
+        secretReference:
+          name: github-webhook-secret
+  successfulBuildsHistoryLimit: 3
+  failedBuildsHistoryLimit: 3
+  runPolicy: Serial

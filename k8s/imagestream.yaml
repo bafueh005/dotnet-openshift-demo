@@ -1,0 +1,10 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: dotnet-openshift-demo
+  namespace: dotnet-demo
+  labels:
+    app: dotnet-openshift-demo
+spec:
+  lookupPolicy:
+    local: true

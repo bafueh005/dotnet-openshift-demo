@@ -27,3 +27,19 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m
+  # The OpenShift image-trigger controller overwrites the container image to
+  # the resolved ImageStreamTag digest. The post-build script writes a fresh
+  # checksum onto the pod template annotations. Both are runtime concerns,
+  # not source-of-truth — ArgoCD should not fight them.
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/spec/containers/0/image
+        - /spec/template/metadata/annotations/app.kubernetes.io~1build-info-checksum
+        - /metadata/annotations/image.openshift.io~1triggers
+    - group: ""
+      kind: ConfigMap
+      name: app-build-info
+      jsonPointers:
+        - /data

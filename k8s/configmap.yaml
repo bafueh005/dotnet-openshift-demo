@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-build-info
+  namespace: dotnet-demo
+  labels:
+    app: dotnet-openshift-demo
+data:
+  APP_NAME: dotnet-openshift-demo
+  APP_VERSION: "0.0.1"
+  APP_GIT_SHA: bootstrap
+  APP_IMAGE_TAG: latest
+  APP_BUILD_TIME: "1970-01-01T00:00:00Z"
